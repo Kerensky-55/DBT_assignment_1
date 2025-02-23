@@ -1,0 +1,39 @@
+version: 2
+
+models:
+  - name: stg_raw_retail_schema__raw_retail_data
+    description: A real online retail transaction data set of two years. Cleaned.
+    columns:
+          - name: Invoice_No
+            description: Invoice number. Nominal. A 6-digit integral number uniquely assigned to each transaction. If this code starts with the letter 'c', it indicates a cancellation.
+            tests:
+              - not_null
+          - name: Stock_Code
+            description: Product (item) code. Nominal. A 5-digit integral number uniquely assigned to each distinct product.
+            tests:
+              - not_null 
+          - name:  Description
+            description: Product (item) name. Nominal. 
+            tests:
+              - not_null
+          - name: Quantity
+            description: The quantities of each product (item) per transaction. Numeric.
+            tests:
+              - not_null
+          - name: Invoice_Date
+            description: Invoice date and time. Numeric. The day and time when a transaction was generated.
+            tests:
+              - not_null
+          - name: Unit_Price
+            description: Unit price. Numeric. Product price per unit in sterling (Â£).
+            tests:
+              - not_null 
+          - name: Customer_ID
+            description: Customer number. Nominal. A 5-digit integral number uniquely assigned to each customer.
+            tests:
+              - not_null
+          - name: Country
+            description: Country name. Nominal. The name of the country where a customer resides. 
+            tests:
+              - not_null
+        
