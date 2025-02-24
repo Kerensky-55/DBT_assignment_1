@@ -1,4 +1,7 @@
 {% macro analyze_snowflake_queries(days_back=7, limit=20) %}
+
+  {% if target.name == 'dev' %}
+
     {% set query %}
         SELECT 
             query_id, 
@@ -25,39 +28,46 @@
             query_text
         FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY
         WHERE start_time >= DATEADD(DAY, -{{ days_back }}, CURRENT_TIMESTAMP())
-        and database_name = '{{ target.database }}'
+        AND database_name = '{{ target.database }}'
         ORDER BY total_execution_time_seconds DESC
         LIMIT {{ limit }}
     {% endset %}
 
-    {% set results = run_query(query) %}
+    {% if execute %}
+        {% set results = run_query(query) %}
+        
+        {% if results|length > 0 %}
+            {% for row in results %}
+                {% set credits_used_formatted = "%.8f" % row['CREDITS_USED'] %}
+                {{ log("✅ Query Execution Log for " ~ row['QUERY_ID'], info=true) }}
+                {{ log("Status: " ~ row['EXECUTION_STATUS'], info=true) }}
+                {{ log("Credits Used: " ~ credits_used_formatted ~ " credits", info=true) }}
+                {{ log("User: " ~ row['USER_NAME'], info=true) }}
+                {{ log("Warehouse: " ~ row['WAREHOUSE_NAME'], info=true) }}
+                {{ log("Database: " ~ row['DATABASE_NAME'], info=true) }}
+                {{ log("Schema: " ~ row['SCHEMA_NAME'], info=true) }}
+                {{ log("Start Time: " ~ row['START_TIME'], info=true) }}
+                {{ log("Total Execution Time: " ~ row['TOTAL_EXECUTION_TIME_SECONDS'] ~ " sec", info=true) }}
+                {{ log("Bytes Scanned: " ~ row['BYTES_SCANNED_GB'] ~ " GB", info=true) }}
+                {{ log("Partitions Scanned: " ~ row['PARTITIONS_SCANNED'], info=true) }}
+                {{ log("Partition Scan %: " ~ row['PARTITION_SCAN_PERCENTAGE'] ~ " %", info=true) }}
+                {{ log("Compilation Time: " ~ row['COMPILATION_TIME_SECONDS'] ~ " sec", info=true) }}
+                {{ log("Execution Time: " ~ row['EXECUTION_TIME_SECONDS'] ~ " sec", info=true) }}
+                {{ log("Total Queue Time: " ~ row['TOTAL_QUEUE_TIME_SECONDS'] ~ " sec", info=true) }}
+                {{ log("Spillage to Local: " ~ row['SPILLAGE_TO_LOCAL_GB'] ~ " GB", info=true) }}
+                {{ log("Spillage to Remote: " ~ row['SPILLAGE_TO_REMOTE_GB'] ~ " GB", info=true) }}
+                {{ log("Query Text: " ~ row['QUERY_TEXT'], info=true) }}
+            {% endfor %}
+        {% else %}
+            {{ log("⚠ No queries found for analysis.", info=true) }}
+        {% endif %}
 
-    {% if execute and results|length > 0 %}
-        {% for row in results %}
-            {% set credits_used_formatted = "%.8f" % row['CREDITS_USED'] %}
-            {{ print("✅ Query Execution Log") }}
-            {{ print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━") }}
-            {{ print("🆔 Query ID       : " ~ row['QUERY_ID']) }}
-            {{ print("📌 Status         : " ~ row['EXECUTION_STATUS']) }}
-            {{ print("❄️  Credits Used   : " ~ credits_used_formatted ~ " credits") }}
-            {{ print("👤 User           : " ~ row['USER_NAME']) }}
-            {{ print("🏢 Warehouse      : " ~ row['WAREHOUSE_NAME']) }}
-            {{ print("🗄️  Database       : " ~ row['DATABASE_NAME']) }}
-            {{ print("📂 Schema        : " ~ row['SCHEMA_NAME']) }}
-            {{ print("⏳ Start Time     : " ~ row['START_TIME']) }}
-            {{ print("⏲️  Total Execution Time: " ~ row['TOTAL_EXECUTION_TIME_SECONDS'] ~ " sec") }}
-            {{ print("📊 Bytes Scanned  : " ~ row['BYTES_SCANNED_GB'] ~ " GB") }}
-            {{ print("🗂️  Partitions Scanned: " ~ row['PARTITIONS_SCANNED']) }}
-            {{ print("📈 Partition Scan %: " ~ row['PARTITION_SCAN_PERCENTAGE'] ~ " %") }}
-            {{ print("⚡ Compilation Time: " ~ row['COMPILATION_TIME_SECONDS'] ~ " sec") }}
-            {{ print("⏱️  Execution Time: " ~ row['EXECUTION_TIME_SECONDS'] ~ " sec") }}
-            {{ print("⏳ Total Queue Time: " ~ row['TOTAL_QUEUE_TIME_SECONDS'] ~ " sec") }}
-            {{ print("🗄️  Spillage to Local : " ~ row['SPILLAGE_TO_LOCAL_GB'] ~ " GB") }}
-            {{ print("🗄️  Spillage to Remote: " ~ row['SPILLAGE_TO_REMOTE_GB'] ~ " GB") }}
-            {{ print("📝 Query Text     : " ~ row['QUERY_TEXT']) }}
-            {{ print("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━") }}
-        {% endfor %}
+        {{ return(results) }}
+
     {% endif %}
 
-    {{ return(results) }}
+  {% else %}
+    {{ log("🚫 Skipping execution: This macro runs only in 'dev' environment.", info=true) }}
+  {% endif %}
+
 {% endmacro %}
