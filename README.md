@@ -41,37 +41,42 @@ By structuring the data into **staging, intermediate, fact, and dimension models
 
 ---
 
-## Project Directory Structure
+# Project Directory Structure
 
-```plaintext
-/dbt_project
-│── models
+```
+assignment1
+├── macros
+│   ├── analyze_snowflake_queries
+│   ├── audit_post_hook
+│   ├── audit_pre_hook
+│   ├── create_audit_log
+│   ├── get_column_names
+│   ├── print_audit_logs
+├── models
+│   ├── Intermediate
+│   │   ├── int_customer_lifetime
+│   │   ├── int_customer_spendings
 │   ├── marts
-│   │   ├── fct_sales.sql
-│   │   ├── fct_rfm.sql
-│   │   ├── fct_customer_segmentation.sql
-│   │   ├── dim_customers.sql
-│   │   ├── dim_products.sql
-│   ├── intermediate
-│   │   ├── int_customer_lifetime.sql
-│   │   ├── int_customer_spendings.sql
+│   │   ├── dimensions
+│   │   │   ├── dim_customers
+│   │   │   ├── dim_products
+│   │   ├── facts
+│   │   │   ├── fct_customer_segmentations
+│   │   │   ├── fct_rfm
+│   │   │   ├── fct_sales
 │   ├── staging
-│   │   ├── stg_raw_retail_schema__raw_retail_data.sql
-│   │   ├── stg_orders.sql
-│   │   ├── stg_customers.sql
-│   ├── sources
-│   │   ├── src_retail_data.sql
-│── macros
-│── seeds
-│── tests
-│── snapshots
-│── dbt_project.yml
+│   │   ├── raw_retail_data
+│   │   ├── stg_raw_retail_data_transactions
+├── snapshots
+│   ├── dim_customer_snapshot
+├── tests
+│   ├── negative_revenue
+│   ├── rfm_score_validation
 ```
 ---
 
 ## Macros
 
-- **Pre & Post Hooks**: Implemented using macros to log model execution times. Pre-hooks insert a log entry before execution, and post-hooks update the log with completion time. These are defined in `audit_hooks.sql` and applied in `dbt_project.yml`.
 - **Custom Macros**:
   - `audit_pre_hook(model_name)`: Inserts a log entry into `audit_log` before model execution.
   - `audit_post_hook(model_name)`: Updates the `audit_log` table with the model completion timestamp.
