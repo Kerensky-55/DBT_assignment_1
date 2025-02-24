@@ -25,6 +25,7 @@
             query_text
         FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY
         WHERE start_time >= DATEADD(DAY, -{{ days_back }}, CURRENT_TIMESTAMP())
+        and database_name = '{{ target.database }}'
         ORDER BY total_execution_time_seconds DESC
         LIMIT {{ limit }}
     {% endset %}
