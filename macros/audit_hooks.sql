@@ -40,6 +40,9 @@
 {% endmacro %}
 
 {% macro print_audit_logs(model_name) %}
+
+  {% if target.name == 'dev' %}
+
     {{ log("🚀 fetching latest audit log for model: " ~ model_name, info=true) }}
 
     {% set fetch_query %}
@@ -72,4 +75,9 @@
     {% else %}
         {{ log("⚠ skipping execution in parsing mode", info=true) }}
     {% endif %}
+
+  {% else %}
+    {{ log("🚫 Skipping execution: This macro runs only in 'dev' environment.", info=true) }}
+  {% endif %}
+
 {% endmacro %}
