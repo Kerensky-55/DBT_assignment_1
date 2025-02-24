@@ -1,0 +1,27 @@
+exposures:
+  - name: Customer_Data
+    label: Customer Data
+    type: dashboard
+    maturity: high
+    url: https://lookerstudio.google.com/reporting/c2ed2ed7-6e3a-442e-90fc-f9d19f577c18
+    description: Used in looker studio dashboard to show customer data and to analysis it.
+    depends_on:
+      - ref('dim_customers')
+    owner:
+      name: Ankur Falari
+      email: ankurfalari55@gmail.com
+
+  - name: Product_Data
+    label: Product Data
+    type: dashboard
+    maturity: high
+    url: https://lookerstudio.google.com/reporting/c2ed2ed7-6e3a-442e-90fc-f9d19f577c18
+    description: Used in looker studio dashboard to show product data and to analysis it.
+    depends_on:
+      - ref('dim_products')
+    owner:
+      name: Ankur Falari
+      email: ankurfalari55@gmail.com
+
+
+      

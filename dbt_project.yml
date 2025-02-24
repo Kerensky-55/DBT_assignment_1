@@ -2,7 +2,7 @@
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'my_new_project'
+name: 'assignment1'
 version: '1.0.0'
 config-version: 2
 
@@ -36,7 +36,21 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 
 models:
-  my_new_project:
-    # Applies to all files under models/example/
-    example:
-      +materialized: table
+  assignment1:
+    +pre-hook: 
+    - "{{ audit_pre_hook(this.name) }}"
+    +post-hook: 
+      - "{{ audit_post_hook(this.name) }}"
+      - "{{ print_audit_logs(this.name) }}"
+
+    staging:
+        +materialized: table
+    intermediate:
+      +materialized: ephemeral
+    marts:
+      facts:
+        +materialized: table
+      dimensions:
+        +materialized: table
+
+
