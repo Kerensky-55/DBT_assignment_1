@@ -34,7 +34,7 @@ By structuring the data into **staging, intermediate, fact, and dimension models
 
 ## Tech Stack
 
-- **<img src="assets/emoji.png" alt="emoji" width="20">dbt Cloud**: For transformation and modeling
+- **🚀 dbt Cloud**: For transformation and modeling
 - **❄️ Snowflake**: Data warehouse for storage and processing
 - **🧩 Jinja**: For dynamic SQL generation
 - **📊 Looker Studio**: For data visualization and reporting
