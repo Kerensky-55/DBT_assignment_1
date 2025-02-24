@@ -34,27 +34,10 @@ By structuring the data into **staging, intermediate, fact, and dimension models
 
 ## Tech Stack
 
-- **🚀 dbt Cloud**: For transformation and modeling
+- **<img src="assets/emoji.png" alt="emoji" width="20">dbt Cloud**: For transformation and modeling
 - **❄️ Snowflake**: Data warehouse for storage and processing
 - **🧩 Jinja**: For dynamic SQL generation
 - **📊 Looker Studio**: For data visualization and reporting
-
----
-
-## Project Structure
-
-The project also includes custom macros for automation and logging under the `macros/` directory.
-
-## Macros
-
-- **Pre & Post Hooks**: Implemented using macros to log model execution times. Pre-hooks insert a log entry before execution, and post-hooks update the log with completion time. These are defined in `audit_hooks.sql` and applied in `dbt_project.yml`.
-- **Custom Macros**:
-  - `audit_pre_hook(model_name)`: Inserts a log entry into `audit_log` before model execution.
-  - `audit_post_hook(model_name)`: Updates the `audit_log` table with the model completion timestamp.
-  - `create_audit_log()`: Creates an `audit_log` table to store execution logs.
-  - `get_column_names(table_name)`: Dynamically retrieves column names from the information schema for a given table.
-  - `print_audit_logs(model_name)`: Fetches and prints the latest audit log entry for a specific model.
-  - `analyze_snowflake_queries(days_back=7, limit=20)`: Retrieves and analyzes Snowflake query execution logs, providing insights into execution time, resource consumption, partition scanning, and credit usage.
 
 ---
 
@@ -84,6 +67,18 @@ The project also includes custom macros for automation and logging under the `ma
 │── snapshots
 │── dbt_project.yml
 ```
+---
+
+## Macros
+
+- **Pre & Post Hooks**: Implemented using macros to log model execution times. Pre-hooks insert a log entry before execution, and post-hooks update the log with completion time. These are defined in `audit_hooks.sql` and applied in `dbt_project.yml`.
+- **Custom Macros**:
+  - `audit_pre_hook(model_name)`: Inserts a log entry into `audit_log` before model execution.
+  - `audit_post_hook(model_name)`: Updates the `audit_log` table with the model completion timestamp.
+  - `create_audit_log()`: Creates an `audit_log` table to store execution logs.
+  - `get_column_names(table_name)`: Dynamically retrieves column names from the information schema for a given table.
+  - `print_audit_logs(model_name)`: Fetches and prints the latest audit log entry for a specific model.
+  - `analyze_snowflake_queries(days_back=7, limit=20)`: Retrieves and analyzes Snowflake query execution logs, providing insights into execution time, resource consumption, partition scanning, and credit usage.
 
 ---
 
