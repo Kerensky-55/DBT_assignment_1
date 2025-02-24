@@ -3,7 +3,7 @@ exposures:
     label: Customer Data
     type: dashboard
     maturity: high
-    url: https://lookerstudio.google.com/reporting/c2ed2ed7-6e3a-442e-90fc-f9d19f577c18
+    url: https://lookerstudio.google.com/reporting/d17cfd4b-9b58-4567-8956-a0b440d34678
     description: Used in looker studio dashboard to show customer data and to analysis it.
     depends_on:
       - ref('dim_customers')
@@ -15,7 +15,7 @@ exposures:
     label: Product Data
     type: dashboard
     maturity: high
-    url: https://lookerstudio.google.com/reporting/c2ed2ed7-6e3a-442e-90fc-f9d19f577c18
+    url: https://lookerstudio.google.com/reporting/d17cfd4b-9b58-4567-8956-a0b440d34678
     description: Used in looker studio dashboard to show product data and to analysis it.
     depends_on:
       - ref('dim_products')
