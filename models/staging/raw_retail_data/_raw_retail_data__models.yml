@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_raw_retail_schema__raw_retail_data
+  - name: stg_raw_retail_data__transactions
     description: A real online retail transaction data set of two years. Cleaned.
     columns:
           - name: Invoice_No

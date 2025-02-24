@@ -58,7 +58,7 @@ models:
         tests:
           - not_null
 
-  - name: fct_customer_segmentation
+  - name: fct_customer_segmentations
     description: Fact table for customer segmentation based on RFM analysis.
     columns:
       - name: customer_id

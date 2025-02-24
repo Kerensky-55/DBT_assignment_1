@@ -50,6 +50,14 @@ models:
         description: Latest recorded unit price of the product.
         tests:
           - not_null
+      - name: highest_unit_price
+        description: Highest recorded unit price of the product
+        tests:
+          - not_null
+      - name: lowest_unit_price
+        description: Lowest recorded unit price of the product
+        tests:
+          - not_null
       - name: total_quantity_sold
         description: Total quantity of the product sold across all transactions.
         tests:
